@@ -24,7 +24,7 @@ class Conan(ConanFile):
         self.build_requires("gtest/1.10.0#5bd93315807d501b61bf09b93635730dd19a83fc")
 
     def requirements(self):
-        self.requires("sdl2/2.0.12")
+        self.requires("sdl2/2.0.14")
         self.requires("sdl2_image/2.0.5")
         self.requires("sdl2_ttf/2.0.15")
 
