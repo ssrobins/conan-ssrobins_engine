@@ -2,6 +2,7 @@
 
 #include "Display.h"
 #include "SDL.h"
+#include "SDL_mixer.h"
 #include <chrono>
 #include <string>
 
@@ -39,6 +40,7 @@ private:
     SDL_Window *window;
     SDL_Renderer* renderer;
     SDL_Rect renderRect;
+    Mix_Music* music;
 
     std::string basePath = 
     #if __ANDROID__

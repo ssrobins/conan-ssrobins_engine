@@ -1,7 +1,6 @@
 #include "ErrorHandler.h"
 #include "Game.h"
 #include "SDL_image.h"
-#include "SDL_mixer.h"
 #include "SDL_ttf.h"
 
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
@@ -178,7 +177,7 @@ void Game::playMusic(const std::string& musicPath)
     {
         throw Exception(Mix_GetError());
     }
-    Mix_Music* music = Mix_LoadMUS(fullMusicPath.c_str());
+    music = Mix_LoadMUS(fullMusicPath.c_str());
     if(music == nullptr)
     {
         throw Exception(Mix_GetError());
@@ -188,5 +187,7 @@ void Game::playMusic(const std::string& musicPath)
 
 void Game::stopMusic()
 {
-    Mix_HaltMusic();
+    Mix_FadeOutMusic(100);
+    Mix_FreeMusic(music);
+    music = nullptr;
 }
