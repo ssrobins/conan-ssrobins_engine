@@ -1,6 +1,7 @@
 #include "ErrorHandler.h"
 #include "Game.h"
 #include "SDL_image.h"
+#include "SDL_mixer.h"
 #include "SDL_ttf.h"
 
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
@@ -167,4 +168,20 @@ void Game::renderFillRect(const SDL_Rect& rect, const SDL_Color& color)
 {
     setRenderDrawColor(color);
     SDL_RenderFillRect(renderer, &rect);
+}
+
+void Game::playMusic(const std::string& musicPath)
+{
+    std::string fullMusicPath = basePath + musicPath;
+
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        throw Exception(Mix_GetError());
+    }
+    Mix_Music* music = Mix_LoadMUS(fullMusicPath.c_str());
+    if(music == nullptr)
+    {
+        throw Exception(Mix_GetError());
+    }
+    Mix_PlayMusic(music, -1);
 }
