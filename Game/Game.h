@@ -20,6 +20,7 @@ public:
     void renderPresent();
     void renderFillRect(const SDL_Rect& rect, const SDL_Color& color);
     void playMusic(const std::string& musicPath);
+    void stopMusic();
     int getScreenWidth() { return display.getScreenWidth(); }
     int getScreenHeight() { return display.getScreenHeight(); }
     int getGameWidth() { return display.getGameWidth(); }

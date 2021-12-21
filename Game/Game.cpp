@@ -185,3 +185,8 @@ void Game::playMusic(const std::string& musicPath)
     }
     Mix_PlayMusic(music, -1);
 }
+
+void Game::stopMusic()
+{
+    Mix_HaltMusic();
+}
