@@ -1,6 +1,7 @@
 #include "ErrorHandler.h"
 #include "Game.h"
 #include "SDL_image.h"
+#include <chrono>
 
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
     : screenScale(getScreenScale(fullscreen))

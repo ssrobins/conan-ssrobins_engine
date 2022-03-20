@@ -27,7 +27,7 @@ public:
     int getGameWidth() { return display.getGameWidth(); }
     int getGameHeight() { return display.getGameHeight(); }
     int getTileSize() { return display.getTileSize(); }
-    float getFPS() { return fps; }
+    int getFPS() { return fps; }
     void calculateFPS();
     int getOutlineOffsetWidth() { return display.getOutlineOffsetWidth(); };
     int getOutlineOffsetHeight() { return display.getOutlineOffsetHeight(); };
