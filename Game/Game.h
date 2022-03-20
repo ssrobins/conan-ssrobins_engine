@@ -3,6 +3,7 @@
 #include "Display.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
+#include "SDL_ttf.h"
 #include <chrono>
 #include <string>
 
@@ -13,7 +14,7 @@ public:
     ~Game();
     const float getScreenScale(bool fullscreen);
 
-    float getPixelsToPointsScaleFactor(std::string& fontPath);
+    float getPixelsToPointsScaleFactor();
     void text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x = 0, int y = 0, bool centered = false);
     void renderSetViewport();
     void setRenderDrawColor(const SDL_Color& color);
@@ -41,6 +42,7 @@ private:
     SDL_Renderer* renderer;
     SDL_Rect renderRect;
     Mix_Music* music;
+    TTF_Font* font;
 
     std::string basePath = 
     #if __ANDROID__

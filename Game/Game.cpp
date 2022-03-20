@@ -1,7 +1,6 @@
 #include "ErrorHandler.h"
 #include "Game.h"
 #include "SDL_image.h"
-#include "SDL_ttf.h"
 
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
     : screenScale(getScreenScale(fullscreen))
@@ -65,12 +64,20 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     {
         throw Exception(SDL_GetError());
     }
+
+    std::string fontPath = basePath + "assets/OpenSans-Regular.ttf";
+    font = TTF_OpenFont(fontPath.c_str(), 100);
+    if (font == nullptr)
+    {
+        throw Exception(SDL_GetError());
+    }
 }
 
 Game::~Game()
 {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_CloseFont(font);
     SDL_Quit();
 }
 
@@ -86,43 +93,30 @@ const float Game::getScreenScale(bool fullscreen)
     }
 }
 
-float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
+float Game::getPixelsToPointsScaleFactor()
 {
     int fontSize = 100;
-    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-    if (font == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
+    TTF_SetFontSize(font, fontSize);
 
     int height = TTF_FontHeight(font);
     if (height <= 0)
     {
-        throw Exception("Font " + fontPath + " height is " + std::to_string(height));
+        throw Exception("Font height is " + std::to_string(height));
     }
-
-    TTF_CloseFont(font);
 
     return static_cast<float>(fontSize) / static_cast<float>(height);
 }
 
 void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x, int y, bool centered)
 {
-    std::string fontPath = basePath + "assets/OpenSans-Regular.ttf";
-
-    float scale = getPixelsToPointsScaleFactor(fontPath);
+    float scale = getPixelsToPointsScaleFactor();
     int heightPixels = display.heightPercentToPixels(fontSizeHeightPercent);
     int fontSize = static_cast<int>(heightPixels * scale);
 
-    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-    if (font == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
+    TTF_SetFontSize(font, fontSize);
 
     SDL_Surface* surf = TTF_RenderText_Blended(font, text, fontColor);
 
-    TTF_CloseFont(font);
     SDL_Texture* labelTexture = SDL_CreateTextureFromSurface(renderer, surf);
 
     int textureWidth = surf->w;
