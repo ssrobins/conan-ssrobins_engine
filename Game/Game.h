@@ -4,7 +4,6 @@
 #include "SDL.h"
 #include "SDL_mixer.h"
 #include "SDL_ttf.h"
-#include <chrono>
 #include <string>
 
 class Game
@@ -28,6 +27,8 @@ public:
     int getGameWidth() { return display.getGameWidth(); }
     int getGameHeight() { return display.getGameHeight(); }
     int getTileSize() { return display.getTileSize(); }
+    float getFPS() { return fps; }
+    void calculateFPS();
     int getOutlineOffsetWidth() { return display.getOutlineOffsetWidth(); };
     int getOutlineOffsetHeight() { return display.getOutlineOffsetHeight(); };
     int widthPercentToPixels(int percent) { return display.widthPercentToPixels(percent); }
@@ -43,6 +44,8 @@ private:
     SDL_Rect renderRect;
     Mix_Music* music;
     TTF_Font* font;
+    int fps = 0;
+
 
     std::string basePath = 
     #if __ANDROID__
