@@ -3,6 +3,65 @@
 #include "SDL_image.h"
 #include <chrono>
 
+Text::Text(const char * text, int heightPixels, std::string fontPath, SDL_Color fontColor, int gameWidth, SDL_Renderer* renderer, int x, int y, bool centered)
+    : fontColor(fontColor)
+    , centered(centered)
+    , text(text)
+    , y(y)
+    , renderer(renderer)
+    , gameWidth(gameWidth)
+{
+    fontSize = 100;
+    font = TTF_OpenFont(fontPath.c_str(), fontSize);
+    if (font == nullptr)
+    {
+        throw Exception(SDL_GetError());
+    }
+
+    float scale = getPixelsToPointsScaleFactor();
+    fontSize = static_cast<int>(heightPixels * scale);
+
+    createTexture();
+}
+
+void Text::createTexture()
+{
+    TTF_SetFontSize(font, fontSize);
+
+    surf = TTF_RenderText_Blended(font, text, fontColor);
+    int textureWidth = surf->w;
+    int textureHeight = surf->h;
+
+    SDL_DestroyTexture(labelTexture);
+    labelTexture = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
+
+    if (centered)
+    {
+        x = (gameWidth - textureWidth) / 2 - 3;
+    }
+
+    renderQuad = { x, y, textureWidth, textureHeight };
+}
+
+void Text::render()
+{
+    SDL_RenderCopyEx(renderer, labelTexture, nullptr, &renderQuad, 0.0, nullptr, SDL_FLIP_NONE);
+}
+
+void Text::updateText(const char * newText)
+{
+    text = newText;
+    createTexture();
+}
+
+Text::~Text()
+{
+    SDL_FreeSurface(surf);
+    SDL_DestroyTexture(labelTexture);
+    TTF_CloseFont(font);
+}
+
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
     : screenScale(getScreenScale(fullscreen))
     , display(numTilesWidth, numTilesHeight)
@@ -94,11 +153,12 @@ const float Game::getScreenScale(bool fullscreen)
     }
 }
 
-float Game::getPixelsToPointsScaleFactor()
+float Text::getPixelsToPointsScaleFactor()
 {
-    int fontSize = 100;
-    TTF_SetFontSize(font, fontSize);
-
+    if (font == nullptr)
+    {
+        throw Exception(SDL_GetError());
+    }
     int height = TTF_FontHeight(font);
     if (height <= 0)
     {
@@ -110,6 +170,7 @@ float Game::getPixelsToPointsScaleFactor()
 
 void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x, int y, bool centered)
 {
+    /*
     float scale = getPixelsToPointsScaleFactor();
     int heightPixels = display.heightPercentToPixels(fontSizeHeightPercent);
     int fontSize = static_cast<int>(heightPixels * scale);
@@ -133,6 +194,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
 
     SDL_RenderCopyEx(renderer, labelTexture, nullptr, &renderQuad, 0.0, nullptr, SDL_FLIP_NONE);
     SDL_DestroyTexture(labelTexture);
+    */
 }
 
 void Game::renderSetViewport()

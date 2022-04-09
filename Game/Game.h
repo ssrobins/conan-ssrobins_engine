@@ -6,6 +6,30 @@
 #include "SDL_ttf.h"
 #include <string>
 
+class Text
+{
+public:
+    Text(const char * text, int heightPixels, std::string fontPath, SDL_Color fontColor, int gameWidth, SDL_Renderer* renderer, int x = 0, int y = 0, bool centered = false);
+    ~Text();
+    void updateText(const char * newText);
+    void createTexture();
+    void render();
+private:
+    float getPixelsToPointsScaleFactor();
+    TTF_Font* font;
+    int fontSize;
+    SDL_Color fontColor;
+    const char * text;
+    int x;
+    int y;
+    bool centered;
+    SDL_Surface* surf;
+    SDL_Texture* labelTexture;
+    SDL_Rect renderQuad;
+    SDL_Renderer* renderer;
+    int gameWidth;
+};
+
 class Game
 {
 public:
@@ -13,7 +37,7 @@ public:
     ~Game();
     const float getScreenScale(bool fullscreen);
 
-    float getPixelsToPointsScaleFactor();
+    //float getPixelsToPointsScaleFactor();
     void text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x = 0, int y = 0, bool centered = false);
     void renderSetViewport();
     void setRenderDrawColor(const SDL_Color& color);
@@ -28,6 +52,8 @@ public:
     int getGameHeight() { return display.getGameHeight(); }
     int getTileSize() { return display.getTileSize(); }
     int getFPS() { return fps; }
+    std::string getBasePath() { return basePath; }
+    SDL_Renderer* getRenderer() { return renderer; }
     void calculateFPS();
     int getOutlineOffsetWidth() { return display.getOutlineOffsetWidth(); };
     int getOutlineOffsetHeight() { return display.getOutlineOffsetHeight(); };
