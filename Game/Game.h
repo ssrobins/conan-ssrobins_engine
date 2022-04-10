@@ -46,19 +46,19 @@ public:
     void renderFillRect(const SDL_Rect& rect, const SDL_Color& color);
     void playMusic(const std::string& musicPath);
     void stopMusic();
-    int getScreenWidth() { return display.getScreenWidth(); }
-    int getScreenHeight() { return display.getScreenHeight(); }
-    int getGameWidth() { return display.getGameWidth(); }
-    int getGameHeight() { return display.getGameHeight(); }
-    int getTileSize() { return display.getTileSize(); }
-    int getFPS() { return fps; }
-    std::string getBasePath() { return basePath; }
-    SDL_Renderer* getRenderer() { return renderer; }
+    int getScreenWidth() const { return display.getScreenWidth(); }
+    int getScreenHeight() const { return display.getScreenHeight(); }
+    int getGameWidth() const { return display.getGameWidth(); }
+    int getGameHeight() const { return display.getGameHeight(); }
+    int getTileSize() const { return display.getTileSize(); }
+    int getFPS() const { return fps; }
+    std::string getBasePath() const { return basePath; }
+    SDL_Renderer* getRenderer() const { return renderer; }
     void calculateFPS();
     int getOutlineOffsetWidth() { return display.getOutlineOffsetWidth(); };
     int getOutlineOffsetHeight() { return display.getOutlineOffsetHeight(); };
-    int widthPercentToPixels(int percent) { return display.widthPercentToPixels(percent); }
-    int heightPercentToPixels(int percent) { return display.heightPercentToPixels(percent); }
+    int widthPercentToPixels(int percent) const { return display.widthPercentToPixels(percent); }
+    int heightPercentToPixels(int percent) const { return display.heightPercentToPixels(percent); }
 
 private:
     const float screenScale;

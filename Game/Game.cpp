@@ -7,6 +7,7 @@ Text::Text(const char * text, int heightPixels, std::string fontPath, SDL_Color 
     : fontColor(fontColor)
     , centered(centered)
     , text(text)
+    , x(x)
     , y(y)
     , renderer(renderer)
     , gameWidth(gameWidth)
